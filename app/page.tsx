@@ -231,30 +231,8 @@ export default function Home() {
 
           {/* ABOUT ME SECTION */}
           <BentoCard className="md:col-span-12 flex flex-col lg:flex-row items-center lg:items-stretch gap-12 py-10">
-            {/* Image Left */}
-            <div className="shrink-0">
-              <ImagePlaceholder className="w-64 h-64 md:w-72 md:h-80 rounded-[2.5rem] shadow-2xl rotate-[-2deg] hover:rotate-0 transition-transform duration-500" label="Alternate View" />
-            </div>
-
-            {/* Content Middle */}
-            <div className="flex-1 flex flex-col justify-center text-center lg:text-left">
-              <div className="flex items-center gap-2 text-sky-400 mb-4 justify-center lg:justify-start">
-                <Sparkles size={18} />
-                <span className="text-[10px] uppercase tracking-widest font-bold">The Journey</span>
-              </div>
-              <h2 className="text-3xl font-black mb-6 tracking-tight">Crafting Digital <span className="text-sky-400">Excellence</span></h2>
-              <div className="space-y-4 text-white/60 leading-relaxed text-sm md:text-base max-w-2xl mx-auto lg:mx-0">
-                <p>
-                  I'm a visionary technologist and co-founder dedicated to architecting seamless digital experiences. With a deep passion for innovation, I bridge the gap between complex engineering and human-centric design.
-                </p>
-                <p>
-                  At Skyrix Technologies, we don't just build software; we engineer solutions that redefine how users interact with the digital world, focusing on performance, scalability, and aesthetic precision.
-                </p>
-              </div>
-            </div>
-
-            {/* Skills Right */}
-            <div className="w-full lg:w-80 flex flex-col justify-center gap-6">
+            {/* Skills Left */}
+            <div className="w-full lg:w-80 flex flex-col justify-center gap-6 order-2 lg:order-1">
               {[
                 { name: "System Architecture", level: 95 },
                 { name: "Fullstack Engineering", level: 90 },
@@ -276,6 +254,28 @@ export default function Home() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Content Middle */}
+            <div className="flex-1 flex flex-col justify-center text-center lg:text-left order-3 lg:order-2">
+              <div className="flex items-center gap-2 text-sky-400 mb-4 justify-center lg:justify-start">
+                <Sparkles size={18} />
+                <span className="text-[10px] uppercase tracking-widest font-bold">The Journey</span>
+              </div>
+              <h2 className="text-3xl font-black mb-6 tracking-tight">Crafting Digital <span className="text-sky-400">Excellence</span></h2>
+              <div className="space-y-4 text-white/60 leading-relaxed text-sm md:text-base max-w-2xl mx-auto lg:mx-0">
+                <p>
+                  I'm a visionary technologist and co-founder dedicated to architecting seamless digital experiences. With a deep passion for innovation, I bridge the gap between complex engineering and human-centric design.
+                </p>
+                <p>
+                  At Skyrix Technologies, we don't just build software; we engineer solutions that redefine how users interact with the digital world, focusing on performance, scalability, and aesthetic precision.
+                </p>
+              </div>
+            </div>
+
+            {/* Image Right */}
+            <div className="shrink-0 order-1 lg:order-3">
+              <ImagePlaceholder className="w-64 h-64 md:w-72 md:h-80 rounded-[2.5rem] shadow-2xl rotate-[2deg] hover:rotate-0 transition-transform duration-500" label="Alternate View" />
             </div>
           </BentoCard>
 
