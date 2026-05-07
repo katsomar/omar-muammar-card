@@ -181,6 +181,7 @@ export default function Home() {
   return (
     <main ref={containerRef} className="mesh-gradient min-h-screen text-white font-sans selection:bg-sky-500/30 overflow-x-hidden relative">
       <div className="noise" />
+      <HeaderStrip />
       
       <AnimatePresence>
         {!isLoaded && <BootUpSplash />}
@@ -395,34 +396,58 @@ export default function Home() {
 
       {/* FOOTER & CTA */}
       <div className="max-w-[1440px] mx-auto px-4 lg:px-12 pb-24 md:pb-32 relative z-10">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-12 border-t border-white/5 pt-12">
-          <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-sm">
-            <h3 className="text-2xl font-bold mb-2">Let's Build Something</h3>
-            <p className="text-white/40 text-sm mb-6">Currently accepting limited collaborations for high-impact architectural and technological projects.</p>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-12 border-t border-white/5 pt-16">
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center border border-sky-500/20 group hover:bg-sky-500 transition-all duration-500">
+                <Rocket size={20} className="text-sky-400 group-hover:text-white" />
+              </div>
+              <h3 className="text-2xl font-black tracking-tighter">Skyrix <span className="text-sky-400">Tech</span></h3>
+            </div>
+            <p className="text-white/30 text-sm mb-8 max-w-sm font-medium">
+              Architecting the next generation of digital infrastructure and immersive user experiences.
+            </p>
             <div className="flex gap-4">
-              <Twitter className="text-white/20 hover:text-sky-400 cursor-pointer transition-colors" size={20} />
-              <Instagram className="text-white/20 hover:text-pink-500 cursor-pointer transition-colors" size={20} />
-              <Linkedin className="text-white/20 hover:text-blue-500 cursor-pointer transition-colors" size={20} />
+              {[Twitter, Instagram, Linkedin, Globe].map((Icon, i) => (
+                <motion.div
+                  key={i}
+                  whileHover={{ y: -5, scale: 1.1 }}
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/20 hover:text-sky-400 hover:border-sky-400/30 cursor-pointer transition-all"
+                >
+                  <Icon size={18} />
+                </motion.div>
+              ))}
             </div>
           </div>
           
-          <motion.button
-            onClick={downloadVCard}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="group relative w-full md:w-auto px-12 py-6 rounded-2xl overflow-hidden shadow-2xl"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-sky-600 to-cyan-500 transition-transform group-hover:scale-110" />
-            <div className="absolute inset-0 shimmer" />
-            <div className="relative flex items-center justify-center gap-3 text-white font-black tracking-widest text-xs uppercase">
-              <Download size={18} />
-              Add to Contacts
+          <div className="flex flex-col items-center md:items-end gap-6">
+            <div className="text-right hidden md:block">
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 block mb-2">Primary Contact</span>
+              <span className="text-lg font-bold text-white/60">muammar@skyrix.com</span>
             </div>
-          </motion.button>
+            <motion.button
+              onClick={downloadVCard}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="group relative w-full md:w-auto px-12 py-6 rounded-2xl overflow-hidden shadow-2xl"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-sky-600 to-cyan-500 transition-transform group-hover:scale-110" />
+              <div className="absolute inset-0 shimmer" />
+              <div className="relative flex items-center justify-center gap-3 text-white font-black tracking-widest text-xs uppercase">
+                <Download size={18} />
+                Add to Contacts
+              </div>
+            </motion.button>
+          </div>
         </div>
         
-        <div className="mt-24 text-center">
-          <div className="inline-block p-1 px-3 rounded-full bg-white/5 border border-white/5 text-[8px] font-bold uppercase tracking-widest text-white/20">
+        <div className="mt-24 pt-8 border-t border-white/[0.03] flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex gap-8 text-[9px] font-black uppercase tracking-[0.2em] text-white/20">
+            <span className="hover:text-white cursor-pointer transition-colors">Privacy Policy</span>
+            <span className="hover:text-white cursor-pointer transition-colors">Terms of Service</span>
+            <span className="hover:text-white cursor-pointer transition-colors">Cookie Policy</span>
+          </div>
+          <div className="p-1 px-4 rounded-full bg-white/[0.02] border border-white/5 text-[9px] font-bold uppercase tracking-widest text-white/20">
             &copy; 2026 Skyrix Technologies &bull; Powered by Muammar Omar
           </div>
         </div>
