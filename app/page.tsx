@@ -332,21 +332,31 @@ const BentoCard = ({ children, className = "", delay = 0 }: { children: React.Re
 
 const TechMarquee = () => {
   const techs = [
-    { name: "Next.js", icon: Globe2 },
-    { name: "TypeScript", icon: Code2 },
-    { name: "Tailwind", icon: Layers },
-    { name: "React", icon: Cpu },
-    { name: "Vercel", icon: Rocket },
-    { name: "Supabase", icon: ShieldCheck },
+    { name: "Next.js", img: "/images/nxt.png" },
+    { name: "TypeScript", img: "/images/ts.png" },
+    { name: "Tailwind", img: "/images/tail.png" },
+    { name: "React", img: "/images/react.png" },
+    { name: "Node.js", img: "/images/node.png" },
+    { name: "Python", img: "/images/py.png" },
+    { name: "SQL", img: "/images/sql.png" },
+    { name: "PHP", img: "/images/php.png" },
   ];
   
   return (
-    <div className="flex overflow-hidden mt-4 gap-4 py-2">
-      <div className="flex animate-marquee gap-8 items-center whitespace-nowrap">
+    <div className="flex overflow-hidden mt-6 gap-4 py-2">
+      <div className="flex animate-marquee gap-10 items-center whitespace-nowrap">
         {[...techs, ...techs].map((tech, i) => (
-          <div key={i} className="flex items-center gap-2 text-white/40 text-sm font-medium hover:text-sky-400 transition-colors">
-            <tech.icon size={16} />
-            {tech.name}
+          <div key={i} className="flex items-center group gap-3">
+            <div className="w-6 h-6 relative transition-all duration-500 group-hover:scale-110">
+              <img 
+                src={tech.img} 
+                alt={tech.name}
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <span className="text-[10px] font-black text-white/40 group-hover:text-sky-400 transition-colors uppercase tracking-widest">
+              {tech.name}
+            </span>
           </div>
         ))}
       </div>
