@@ -12,6 +12,37 @@ import Stats from "@/components/Stats";
 
 // --- Sub-components ---
 
+const HeaderStrip = () => (
+  <div className="fixed top-0 left-0 right-0 z-[60] h-10 bg-[#050A18]/80 backdrop-blur-md border-b border-white/5 flex items-center px-6 overflow-hidden">
+    <div className="absolute inset-0 bg-sky-500/5 animate-pulse" />
+    <div className="absolute bottom-0 left-0 h-[1px] bg-sky-400/30 w-full overflow-hidden">
+      <motion.div 
+        animate={{ x: ["-100%", "100%"] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        className="w-1/3 h-full bg-gradient-to-r from-transparent via-sky-400 to-transparent"
+      />
+    </div>
+    <div className="max-w-[1440px] mx-auto w-full flex items-center justify-between text-[8px] font-black tracking-[0.3em] uppercase text-white/40">
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <div className="w-1 h-1 rounded-full bg-green-500 shadow-[0_0_5px_#22C55E]" />
+          <span>System Online</span>
+        </div>
+        <div className="hidden sm:block h-3 w-[1px] bg-white/10" />
+        <div className="hidden sm:flex items-center gap-2">
+          <Globe size={10} className="text-sky-400" />
+          <span>Global Access Secured</span>
+        </div>
+      </div>
+      <div className="flex items-center gap-4">
+        <div className="hidden md:block">Local Time: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        <div className="h-3 w-[1px] bg-white/10" />
+        <div className="text-sky-400 animate-pulse">SKYRIX-CORE-V2.0</div>
+      </div>
+    </div>
+  </div>
+);
+
 const ImagePlaceholder = ({ className = "", label = "Image Placeholder" }: { className?: string; label?: string }) => (
   <div className={`relative overflow-hidden group ${className}`}>
     <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent animate-pulse" />
@@ -258,12 +289,16 @@ export default function Home() {
 
             {/* Content Middle */}
             <div className="flex-1 flex flex-col justify-center text-center lg:text-left order-3 lg:order-2">
-              <div className="flex items-center gap-2 text-sky-400 mb-4 justify-center lg:justify-start">
-                <Sparkles size={18} />
-                <span className="text-[10px] uppercase tracking-widest font-bold">The Journey</span>
+              <div className="flex items-center gap-3 text-sky-400 mb-6 justify-center lg:justify-start">
+                <div className="w-8 h-[1px] bg-sky-500/50" />
+                <span className="text-[10px] uppercase tracking-[0.3em] font-black">The Narrative</span>
+                <div className="w-2 h-2 rounded-full bg-sky-500 animate-pulse" />
               </div>
-              <h2 className="text-3xl font-black mb-6 tracking-tight">Crafting Digital <span className="text-sky-400">Excellence</span></h2>
-              <div className="space-y-4 text-white/60 leading-relaxed text-sm md:text-base max-w-2xl mx-auto lg:mx-0">
+              <h2 className="text-3xl md:text-4xl font-black mb-8 tracking-tighter leading-none italic">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/40">Architecting</span> <br/>
+                <span className="text-sky-400 drop-shadow-[0_0_15px_rgba(14,165,233,0.3)]">Digital Legacies</span>
+              </h2>
+              <div className="space-y-6 text-white/50 leading-relaxed text-sm md:text-base max-w-2xl mx-auto lg:mx-0 font-medium">
                 <p>
                   I'm a visionary technologist and co-founder dedicated to architecting seamless digital experiences. With a deep passion for innovation, I bridge the gap between complex engineering and human-centric design.
                 </p>
@@ -275,20 +310,28 @@ export default function Home() {
 
             {/* Image Right */}
             <div className="shrink-0 order-1 lg:order-3">
-              <ImagePlaceholder className="w-64 h-64 md:w-72 md:h-80 rounded-[2.5rem] shadow-2xl rotate-[2deg] hover:rotate-0 transition-transform duration-500" label="Alternate View" />
+              <ImagePlaceholder className="w-64 h-64 md:w-72 md:h-80 rounded-[2.5rem] shadow-2xl rotate-[2deg] hover:rotate-0 transition-all duration-700 border border-white/5" label="Alternate View" />
             </div>
           </BentoCard>
 
           {/* FEATURED PROJECTS GALLERY */}
-          <BentoCard className="md:col-span-12 group/gallery">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-2 text-sky-400">
-                <Layers size={18} />
-                <span className="text-[10px] uppercase tracking-widest font-bold">Featured Creations</span>
+          <BentoCard className="md:col-span-12 group/gallery py-12">
+            <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+              <div className="flex flex-col items-center md:items-start gap-2">
+                <div className="flex items-center gap-2 text-sky-400">
+                  <Layers size={14} className="animate-bounce" />
+                  <span className="text-[10px] uppercase tracking-[0.4em] font-black">Portfolio</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-white to-white/40 uppercase">
+                  Featured <span className="text-sky-400">Creations</span>
+                </h2>
               </div>
-              <div className="flex items-center gap-2 text-white/40 text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:text-white transition-colors">
-                View All <ChevronRight size={14} />
-              </div>
+              <motion.div 
+                whileHover={{ x: 5 }}
+                className="flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] cursor-pointer hover:bg-sky-500/10 hover:text-sky-400 transition-all group"
+              >
+                View Catalog <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </motion.div>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
