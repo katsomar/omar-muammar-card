@@ -76,28 +76,27 @@ const BackgroundParticles = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {[...Array(20)].map((_, i) => (
+      {[...Array(10)].map((_, i) => (
         <motion.div
           key={i}
           initial={{ 
-            opacity: Math.random() * 0.5, 
+            opacity: Math.random() * 0.3, 
             x: Math.random() * 100 + "%", 
             y: Math.random() * 100 + "%" 
           }}
           animate={{ 
             y: [null, Math.random() * 100 - 50 + "vh"],
-            x: [null, Math.random() * 100 - 50 + "vw"],
-            opacity: [0.1, 0.4, 0.1]
+            opacity: [0.1, 0.3, 0.1]
           }}
           transition={{ 
             duration: Math.random() * 10 + 20, 
             repeat: Infinity, 
             ease: "linear" 
           }}
-          className="absolute w-1 h-1 bg-sky-400/40 rounded-full blur-[1px]"
+          className="absolute w-1 h-1 bg-sky-400/20 rounded-full blur-[1px]"
         />
       ))}
-      {[...Array(15)].map((_, i) => (
+      {[...Array(6)].map((_, i) => (
         <motion.div
           key={`glow-${i}`}
           initial={{ 
@@ -115,7 +114,7 @@ const BackgroundParticles = () => {
             ease: "easeInOut",
             delay: Math.random() * 5
           }}
-          className="absolute w-24 h-24 bg-sky-500/10 rounded-full blur-[60px]"
+          className="absolute w-24 h-24 bg-sky-500/5 rounded-full blur-[60px]"
         />
       ))}
     </div>

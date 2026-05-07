@@ -45,11 +45,17 @@ body {
 
 @layer utilities {
   .glass {
-    @apply bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)];
+    @apply bg-white/[0.03] border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)];
+    @supports (backdrop-filter: blur(1px)) {
+      @apply md:backdrop-blur-2xl;
+    }
   }
   
   .glass-card {
-    @apply bg-gradient-to-br from-white/[0.08] to-transparent backdrop-blur-xl border border-white/10 shadow-2xl;
+    @apply bg-gradient-to-br from-white/[0.08] to-transparent border border-white/10 shadow-2xl;
+    @supports (backdrop-filter: blur(1px)) {
+      @apply md:backdrop-blur-xl;
+    }
   }
 
   .glow-box {
