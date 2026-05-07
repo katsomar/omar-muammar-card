@@ -12,38 +12,56 @@ import Stats from "@/components/Stats";
 
 // --- Sub-components ---
 
-const HeaderStrip = () => (
-  <div className="fixed top-0 left-0 right-0 z-[60] h-10 bg-[#050A18]/80 backdrop-blur-md border-b border-white/5 flex items-center px-6 overflow-hidden">
-    <div className="absolute inset-0 bg-sky-500/5 animate-pulse" />
-    <div className="absolute bottom-0 left-0 h-[1px] bg-sky-400/30 w-full overflow-hidden">
-      <motion.div 
-        animate={{ x: ["-100%", "100%"] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-        className="w-1/3 h-full bg-gradient-to-r from-transparent via-sky-400 to-transparent"
-      />
-    </div>
-    <div className="max-w-[1440px] mx-auto w-full flex items-center justify-between text-[8px] font-black tracking-[0.3em] uppercase text-white/40">
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <div className="w-1 h-1 rounded-full bg-green-500 shadow-[0_0_5px_#22C55E]" />
-          <span>System Online</span>
+const HeaderStrip = () => {
+  const [mounted, setMounted] = useState(false);
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    setMounted(true);
+    const updateTime = () => setTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 right-0 z-[60] h-10 bg-[#050A18]/80 backdrop-blur-md border-b border-white/5 flex items-center px-6 overflow-hidden">
+      <div className="absolute inset-0 bg-sky-500/5 animate-pulse" />
+      <div className="absolute bottom-0 left-0 h-[1px] bg-sky-400/30 w-full overflow-hidden">
+        <motion.div 
+          animate={{ x: ["-100%", "100%"] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          className="w-1/3 h-full bg-gradient-to-r from-transparent via-sky-400 to-transparent"
+        />
+      </div>
+      <div className="max-w-[1440px] mx-auto w-full flex items-center justify-between text-[8px] font-black tracking-[0.3em] uppercase text-white/40">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-1 h-1 rounded-full bg-green-500 shadow-[0_0_5px_#22C55E]" />
+            <span>System Online</span>
+          </div>
+          <div className="hidden sm:block h-3 w-[1px] bg-white/10" />
+          <div className="hidden sm:flex items-center gap-2">
+            <Globe size={10} className="text-sky-400" />
+            <span>Global Access Secured</span>
+          </div>
         </div>
-        <div className="hidden sm:block h-3 w-[1px] bg-white/10" />
-        <div className="hidden sm:flex items-center gap-2">
-          <Globe size={10} className="text-sky-400" />
-          <span>Global Access Secured</span>
+        <div className="flex items-center gap-4">
+          <div className="hidden md:block">Local Time: {mounted ? time : "--:--"}</div>
+          <div className="h-3 w-[1px] bg-white/10" />
+          <div className="text-sky-400 animate-pulse">SKYRIX-CORE-V2.0</div>
         </div>
       </div>
-      <div className="flex items-center gap-4">
-        <div className="hidden md:block">Local Time: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-        <div className="h-3 w-[1px] bg-white/10" />
-        <div className="text-sky-400 animate-pulse">SKYRIX-CORE-V2.0</div>
-      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const BackgroundParticles = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {[...Array(20)].map((_, i) => (
@@ -89,6 +107,138 @@ const BackgroundParticles = () => {
         />
       ))}
     </div>
+  );
+};
+
+const Typewriter = ({ words }: { words: string[] }) => {
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [reverse, setReverse] = useState(false);
+  const [blink, setBlink] = useState(true);
+
+  // Typewriter effect
+  useEffect(() => {
+    if (subIndex === words[index].length + 1 && !reverse) {
+      setTimeout(() => setReverse(true), 2000);
+      return;
+    }
+
+    if (subIndex === 0 && reverse) {
+      setReverse(false);
+      setIndex((prev) => (prev + 1) % words.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (reverse ? -1 : 1));
+    }, Math.max(reverse ? 75 : subIndex === words[index].length ? 1000 : 150, parseInt((Math.random() * 50).toString())));
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, index, reverse]);
+
+  // Blinking cursor
+  useEffect(() => {
+    const timeout2 = setTimeout(() => {
+      setBlink((prev) => !prev);
+    }, 500);
+    return () => clearTimeout(timeout2);
+  }, [blink]);
+
+  return (
+    <span className="inline-block min-w-[120px]">
+      {words[index].substring(0, subIndex)}
+      <span className={`${blink ? "opacity-100" : "opacity-0"} ml-1 text-sky-400`}>|</span>
+    </span>
+  );
+};
+
+const ProjectCatalogOverlay = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const projects = [
+    { title: "Skyrix OS", category: "Core Infrastructure", desc: "A decentralized operating system built for the next generation of cloud computing.", stack: ["Rust", "Wasm", "Next.js"] },
+    { title: "Bento Builder", category: "Creative Tools", desc: "Dynamic layout engine for high-end digital identities and portfolio management.", stack: ["React", "Framer", "Three.js"] },
+    { title: "Quantum API", category: "Backend Engine", desc: "Ultra-low latency API gateway with automated global scaling and edge computing.", stack: ["Go", "gRPC", "Redis"] },
+    { title: "Nexus Media", category: "Digital Agency", desc: "A creative-first platform for high-end digital storytelling and immersive content.", stack: ["WebGL", "GLSL", "Node.js"] },
+    { title: "Skyrix Cloud", category: "Cloud Services", desc: "Enterprise-grade cloud solutions with a focus on security and architectural precision.", stack: ["AWS", "Terraform", "Docker"] },
+    { title: "Innova Mobile", category: "Mobile Apps", desc: "Cross-platform mobile applications that feel native and perform like desktop software.", stack: ["React Native", "Swift", "Kotlin"] },
+  ];
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[200] bg-[#050A18] flex flex-col overflow-y-auto"
+        >
+          {/* Background Effects */}
+          <div className="fixed inset-0 pointer-events-none">
+            <div className="absolute inset-0 bg-[#050A18]" />
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-sky-500/10 rounded-full blur-[150px] animate-pulse-glow" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-cyan-500/5 rounded-full blur-[150px] animate-pulse-glow delay-1000" />
+            <div className="absolute inset-0 noise opacity-20" />
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+          </div>
+
+          <div className="max-w-7xl mx-auto w-full relative z-10 p-6 md:p-12 lg:py-24">
+            <div className="flex items-center justify-between mb-16">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 text-sky-400">
+                  <Sparkles size={16} />
+                  <span className="text-[10px] uppercase tracking-[0.4em] font-black">Archive</span>
+                </div>
+                <h2 className="text-4xl md:text-6xl font-black tracking-tighter">Project <span className="text-sky-400">Catalog</span></h2>
+              </div>
+              <motion.button
+                onClick={onClose}
+                whileHover={{ rotate: 90, scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-sky-500 transition-all duration-300"
+              >
+                <ChevronRight size={32} className="rotate-180" />
+              </motion.button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {projects.map((project, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="glass-card rounded-[2.5rem] p-8 group cursor-pointer border-white/5 hover:border-sky-500/30 transition-all duration-500"
+                >
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="px-3 py-1 rounded-full bg-sky-500/10 text-sky-400 text-[10px] font-bold uppercase tracking-widest border border-sky-500/20">
+                      {project.category}
+                    </div>
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-sky-500 transition-colors">
+                      <ExternalLink size={18} />
+                    </div>
+                  </div>
+                  
+                  <ImagePlaceholder className="w-full aspect-video rounded-2xl mb-8 bg-gradient-to-br transition-all group-hover:scale-[1.02]" label={project.title} />
+
+                  <h3 className="text-2xl font-black mb-4 group-hover:text-sky-400 transition-colors">{project.title}</h3>
+                  <p className="text-white/40 text-sm leading-relaxed mb-8">
+                    {project.desc}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.stack.map((tech, j) => (
+                      <span key={j} className="text-[9px] font-mono text-white/20 uppercase tracking-widest">{tech}</span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-20 text-center">
+              <p className="text-white/20 text-xs font-medium italic">"And many more architectural secrets yet to be unveiled."</p>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
@@ -208,6 +358,7 @@ const TechMarquee = () => {
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showCatalog, setShowCatalog] = useState(false);
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -232,6 +383,7 @@ export default function Home() {
       <div className="noise" />
       <HeaderStrip />
       <BackgroundParticles />
+      <ProjectCatalogOverlay isOpen={showCatalog} onClose={() => setShowCatalog(false)} />
       
       <AnimatePresence>
         {!isLoaded && <BootUpSplash />}
@@ -378,6 +530,7 @@ export default function Home() {
                 </h2>
               </div>
               <motion.div 
+                onClick={() => setShowCatalog(true)}
                 whileHover={{ x: 5 }}
                 className="flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] cursor-pointer hover:bg-sky-500/10 hover:text-sky-400 transition-all group"
               >
@@ -452,7 +605,11 @@ export default function Home() {
               <div className="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center border border-sky-500/20 group hover:bg-sky-500 transition-all duration-500">
                 <Rocket size={20} className="text-sky-400 group-hover:text-white" />
               </div>
-              <h3 className="text-2xl font-black tracking-tighter">Skyrix <span className="text-sky-400">Tech</span></h3>
+              <h3 className="text-2xl font-black tracking-tighter">
+                Skyrix <span className="text-sky-400">
+                  <Typewriter words={["Technologies", "Media", "Consultants", "Cloud", "Software", "Mobile Apps", "Innovations"]} />
+                </span>
+              </h3>
             </div>
             <p className="text-white/30 text-sm mb-8 max-w-sm font-medium">
               Architecting the next generation of digital infrastructure and immersive user experiences.
@@ -477,15 +634,44 @@ export default function Home() {
             </div>
             <motion.button
               onClick={downloadVCard}
-              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="group relative w-full md:w-auto px-12 py-6 rounded-2xl overflow-hidden shadow-2xl"
+              className="group relative w-full md:w-auto px-12 py-6 rounded-2xl overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-sky-600 to-cyan-500 transition-transform group-hover:scale-110" />
-              <div className="absolute inset-0 shimmer" />
-              <div className="relative flex items-center justify-center gap-3 text-white font-black tracking-widest text-xs uppercase">
-                <Download size={18} />
-                Add to Contacts
+              {/* Outer Glow Layer */}
+              <div className="absolute inset-0 bg-sky-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Border Layer */}
+              <div className="absolute inset-0 rounded-2xl border border-white/10 group-hover:border-sky-400/50 transition-colors duration-500" />
+              
+              {/* Background Layers */}
+              <div className="absolute inset-0 bg-[#050A18] rounded-2xl" />
+              <div className="absolute inset-0 bg-gradient-to-br from-sky-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Animated Liquid Gradient */}
+              <motion.div 
+                animate={{ 
+                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                }}
+                transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-[2px] rounded-[14px] bg-gradient-to-r from-sky-600 via-cyan-500 to-sky-600 bg-[length:200%_auto] opacity-90"
+              />
+              
+              {/* Shimmer Effect */}
+              <div className="absolute inset-0 shimmer opacity-30" />
+              
+              {/* Content */}
+              <div className="relative flex items-center justify-center gap-4 text-white font-black tracking-[0.2em] text-[10px] uppercase">
+                <motion.div
+                  animate={{ y: [0, -2, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <Download size={20} className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
+                </motion.div>
+                <span className="drop-shadow-lg">Save Contact</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-white group-hover:bg-sky-200 animate-pulse shadow-[0_0_10px_#fff]" />
               </div>
             </motion.button>
           </div>
