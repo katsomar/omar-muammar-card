@@ -10,8 +10,8 @@ VERSION:3.0
 FN:Bablo Muammar Omar
 ORG:Skyrix Technologies
 TITLE:Co-Founder
-TEL;TYPE=CELL:+256700000000
-EMAIL:muammar@skyrix.com
+TEL;TYPE=CELL:+256771827046
+EMAIL:katsomar60@gmail.com
 URL:https://skyrix-techologies.vercel.app
 END:VCARD`;
 
