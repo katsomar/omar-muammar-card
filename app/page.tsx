@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import { 
@@ -29,7 +30,7 @@ const HeaderStrip = () => {
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-3">
           <div className="w-6 h-6 overflow-hidden">
-            <img src="/logo/dark.png" alt="Logo" className="w-full h-full object-contain" />
+            <Image src="/logo/dark.png" alt="Logo" width={24} height={24} className="object-contain" />
           </div>
           <div className="w-[1px] h-4 bg-white/10 mx-2 hidden sm:block" />
         </div>
@@ -75,7 +76,7 @@ const BackgroundParticles = () => {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden hidden md:block">
       {[...Array(10)].map((_, i) => (
         <motion.div
           key={i}
@@ -512,9 +513,11 @@ export default function Home() {
                 className="absolute inset-[-8px] rounded-full border border-dashed border-sky-400/30 group-hover:border-sky-400 transition-colors"
               />
               <div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden relative group border-4 border-white/5 shadow-2xl">
-                <img 
+                <Image 
                   src="/images/me.jpg" 
                   alt="Bablo Muammar Omar" 
+                  width={224}
+                  height={224}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050A18]/40 to-transparent pointer-events-none" />
@@ -626,9 +629,11 @@ export default function Home() {
             {/* Image Right */}
             <div className="shrink-0 order-1 lg:order-3">
               <div className="w-64 h-64 md:w-72 md:h-80 rounded-[2.5rem] overflow-hidden relative group shadow-2xl rotate-[2deg] hover:rotate-0 transition-all duration-700 border border-white/5">
-                <img 
+                <Image 
                   src="/images/ceo.jpeg" 
                   alt="Bablo Muammar Omar" 
+                  width={288}
+                  height={320}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050A18]/40 to-transparent pointer-events-none" />
@@ -665,9 +670,11 @@ export default function Home() {
               ].map((project, i) => (
                 <a key={i} href={project.url} target="_blank" rel="noopener noreferrer" className="group/item cursor-pointer block">
                   <div className="w-full aspect-video rounded-2xl mb-4 overflow-hidden relative border border-white/5">
-                    <img 
+                    <Image 
                       src={project.img} 
                       alt={project.title} 
+                      width={400}
+                      height={225}
                       className="w-full h-full object-cover transition-all duration-700 group-hover/item:scale-110 group-hover/item:rotate-1"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#050A18]/60 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500" />
@@ -951,9 +958,11 @@ export default function Home() {
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group hover:border-sky-500 transition-all duration-500 overflow-hidden p-2">
-                <img 
+                <Image 
                   src="/logo/dark.png" 
                   alt="Skyrix Logo"
+                  width={48}
+                  height={48}
                   className="w-full h-full object-contain"
                 />
               </div>
