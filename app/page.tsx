@@ -445,6 +445,7 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showCatalog, setShowCatalog] = useState(false);
   const [activeReview, setActiveReview] = useState(0);
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const containerRef = useRef(null);
 
   const reviews = [
@@ -659,11 +660,11 @@ export default function Home() {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { title: "Skyrix OS", category: "Infrastructure", img: "/projects/loko.png" },
-                { title: "Bento Builder", category: "Open Source", img: "/projects/pos.png" },
-                { title: "Quantum API", category: "Backend", img: "/projects/bw.png" },
+                { title: "E-commerce Website", category: "Full Stack", img: "/projects/loko.png", url: "https://loko-harvest-limited.vercel.app/orders" },
+                { title: "E-commerce Website", category: "Full Stack", img: "/projects/gs.png", url: "https://golden-sprinkles-bakery.vercel.app/#products" },
+                { title: "School Management System", category: "Full Stack", img: "/projects/bw.png", url: "https://bornwell-academy.great-site.net/public/login.php?i=2" },
               ].map((project, i) => (
-                <div key={i} className="group/item cursor-pointer">
+                <a key={i} href={project.url} target="_blank" rel="noopener noreferrer" className="group/item cursor-pointer block">
                   <div className="w-full aspect-video rounded-2xl mb-4 overflow-hidden relative border border-white/5">
                     <img 
                       src={project.img} 
@@ -681,7 +682,7 @@ export default function Home() {
                       <ExternalLink size={14} className="text-white group-hover/item:scale-110 transition-transform" />
                     </div>
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           </BentoCard>
@@ -708,23 +709,85 @@ export default function Home() {
                 </div>
                 
                 <div className="space-y-8">
-                  <div className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-sky-500/20 to-cyan-500/20 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition duration-500" />
-                    <div className="relative flex items-center">
-                      <input 
-                        type="email" 
-                        placeholder="ENTER YOUR EMAIL ADDRESS" 
-                        className="w-full bg-[#0A0F1E]/80 border border-white/5 rounded-2xl py-6 px-8 text-[11px] font-black tracking-[0.2em] text-white outline-none focus:border-sky-500/50 transition-all placeholder:text-white/10"
-                      />
-                      <motion.button 
-                        whileHover={{ scale: 1.05, x: -5 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="absolute right-3 bg-sky-500 text-white px-6 py-3 rounded-xl shadow-xl shadow-sky-500/20 font-black text-[10px] uppercase tracking-widest flex items-center gap-2"
+                  <AnimatePresence mode="wait">
+                    {newsletterStatus === 'success' ? (
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="bg-sky-500/10 border border-sky-500/20 rounded-2xl p-8 text-center flex flex-col items-center gap-4"
                       >
-                        Join <Rocket size={14} />
-                      </motion.button>
-                    </div>
-                  </div>
+                        <div className="w-12 h-12 rounded-full bg-sky-500 flex items-center justify-center shadow-[0_0_20px_rgba(14,165,233,0.4)]">
+                          <Rocket size={24} className="text-white" />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-black text-sm uppercase tracking-widest mb-1">Access Granted</h4>
+                          <p className="text-sky-400/60 text-[10px] font-bold uppercase tracking-widest">You are now part of the Skyrix network.</p>
+                        </div>
+                        <motion.button 
+                          onClick={() => setNewsletterStatus('idle')}
+                          className="mt-2 text-[8px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors"
+                        >
+                          Subscribe another email
+                        </motion.button>
+                      </motion.div>
+                    ) : (
+                      <form 
+                        onSubmit={async (e) => {
+                          e.preventDefault();
+                          const form = e.currentTarget;
+                          const email = new FormData(form).get('email');
+                          setNewsletterStatus('loading');
+                          
+                          const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwXdBOM1XAPUTq_aZ6BMy-GZOA6QzXMAxbx8mf0HsYt96vVNvEeIj-3kp3JXLYMv_jBVw/exec";
+                          
+                          try {
+                            await fetch(GOOGLE_SHEET_URL, {
+                              method: 'POST',
+                              mode: 'no-cors',
+                              body: JSON.stringify({ email, date: new Date().toISOString() }),
+                              headers: { 'Content-Type': 'application/json' }
+                            });
+                            setNewsletterStatus('success');
+                            form.reset();
+                          } catch (err) {
+                            setNewsletterStatus('error');
+                            setTimeout(() => setNewsletterStatus('idle'), 3000);
+                          }
+                        }}
+                        className="relative group"
+                      >
+                        <div className="absolute -inset-1 bg-gradient-to-r from-sky-500/20 to-cyan-500/20 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition duration-500" />
+                        <div className="relative flex items-center">
+                          <input 
+                            name="email"
+                            type="email" 
+                            required
+                            disabled={newsletterStatus === 'loading'}
+                            placeholder={newsletterStatus === 'loading' ? "AUTHENTICATING..." : "ENTER YOUR EMAIL ADDRESS"} 
+                            className="w-full bg-[#0A0F1E]/80 border border-white/5 rounded-2xl py-6 px-8 text-[11px] font-black tracking-[0.2em] text-white outline-none focus:border-sky-500/50 transition-all placeholder:text-white/10 disabled:opacity-50"
+                          />
+                          <motion.button 
+                            type="submit"
+                            disabled={newsletterStatus === 'loading'}
+                            whileHover={{ scale: 1.05, x: -5 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="absolute right-3 bg-sky-500 text-white px-6 py-3 rounded-xl shadow-xl shadow-sky-500/20 font-black text-[10px] uppercase tracking-widest flex items-center gap-2 disabled:opacity-50"
+                          >
+                            {newsletterStatus === 'loading' ? "JOINING..." : "Join"} <Rocket size={14} className={newsletterStatus === 'loading' ? "animate-bounce" : ""} />
+                          </motion.button>
+                        </div>
+                        {newsletterStatus === 'error' && (
+                          <motion.p 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-red-400 text-[8px] font-black uppercase tracking-widest mt-4 text-center"
+                          >
+                            Connection failed. Please try again.
+                          </motion.p>
+                        )}
+                      </form>
+                    )}
+                  </AnimatePresence>
                   
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -861,19 +924,21 @@ export default function Home() {
           {/* CONNECT SECTION */}
           <div className="md:col-span-12 grid grid-cols-2 lg:grid-cols-5 gap-4 mt-2">
             {[
-              { icon: Phone, label: "Phone", value: "+256 700 000 000" },
-              { icon: MessageCircle, label: "WhatsApp", value: "+256 700 000 000" },
-              { icon: Mail, label: "Email", value: "muammar@skyrix.com" },
-              { icon: Linkedin, label: "LinkedIn", value: "Bablo Muammar" },
-              { icon: Globe, label: "Skyrix Technologies", value: "skyrix-tech.vercel.app" },
+              { icon: Phone, label: "Phone", value: "+256 771 827046", url: "tel:+256771827046" },
+              { icon: MessageCircle, label: "WhatsApp", value: "+256 771 827046", url: "https://wa.me/256771827046" },
+              { icon: Mail, label: "Email", value: "katsom60@gmai.com", url: "mailto:katsomar60@gmail.com" },
+              { icon: Linkedin, label: "LinkedIn", value: "Kats Omar", url: "https://www.linkedin.com/in/kats-omar" },
+              { icon: Globe, label: "Skyrix Technologies", value: "skyrix-tech.vercel.app", url: "https://skyrix-techologies.vercel.app/" },
             ].map((item, i) => (
-              <BentoCard key={i} className="flex flex-col items-center justify-center py-8 group cursor-pointer hover:border-sky-500/40 transition-all duration-500">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-4 group-hover:bg-sky-500 transition-all duration-500 group-hover:scale-110 shadow-lg group-hover:shadow-sky-500/20">
-                  <item.icon size={24} className="text-sky-400 group-hover:text-white transition-colors" />
-                </div>
-                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/20 mb-1 group-hover:text-sky-400/50 transition-colors">{item.label}</span>
-                <span className="text-[10px] font-bold text-white/60 group-hover:text-white transition-colors">{item.value}</span>
-              </BentoCard>
+              <a key={i} href={item.url} target={item.url.startsWith('http') ? "_blank" : undefined} rel={item.url.startsWith('http') ? "noopener noreferrer" : undefined}>
+                <BentoCard className="flex flex-col items-center justify-center py-8 group cursor-pointer hover:border-sky-500/40 transition-all duration-500 h-full">
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-4 group-hover:bg-sky-500 transition-all duration-500 group-hover:scale-110 shadow-lg group-hover:shadow-sky-500/20">
+                    <item.icon size={24} className="text-sky-400 group-hover:text-white transition-colors" />
+                  </div>
+                  <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/20 mb-1 group-hover:text-sky-400/50 transition-colors">{item.label}</span>
+                  <span className="text-[10px] font-bold text-white/60 group-hover:text-white transition-colors text-center px-2">{item.value}</span>
+                </BentoCard>
+              </a>
             ))}
           </div>
 
@@ -907,7 +972,7 @@ export default function Home() {
                 { Icon: Facebook, url: "https://www.facebook.com/61588036853642/photos/" },
                 { Icon: Instagram, url: "https://www.instagram.com/skyrixtechnologies?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
                 { Icon: Linkedin, url: "https://www.linkedin.com/in/kats-omar" },
-                { Icon: Globe, url: "https://skyrix-tech.vercel.app" }
+                { Icon: Globe, url: "https://skyrix-techologies.vercel.app/" }
               ].map((social, i) => (
                 <motion.a
                   key={i}

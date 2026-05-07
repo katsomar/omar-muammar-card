@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Bablo Muammar Omar | Skyrix Technologies",
   description: "Co-Founder of Skyrix Technologies. Building the future with cutting-edge technology.",
+  icons: {
+    icon: "/logo/logo2.png",
+    shortcut: "/logo/logo2.png",
+    apple: "/logo/logo2.png",
+  },
 };
 
 export default function RootLayout({
