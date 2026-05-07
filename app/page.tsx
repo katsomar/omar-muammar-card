@@ -43,6 +43,55 @@ const HeaderStrip = () => (
   </div>
 );
 
+const BackgroundParticles = () => {
+  return (
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      {[...Array(20)].map((_, i) => (
+        <motion.div
+          key={i}
+          initial={{ 
+            opacity: Math.random() * 0.5, 
+            x: Math.random() * 100 + "%", 
+            y: Math.random() * 100 + "%" 
+          }}
+          animate={{ 
+            y: [null, Math.random() * 100 - 50 + "vh"],
+            x: [null, Math.random() * 100 - 50 + "vw"],
+            opacity: [0.1, 0.4, 0.1]
+          }}
+          transition={{ 
+            duration: Math.random() * 10 + 20, 
+            repeat: Infinity, 
+            ease: "linear" 
+          }}
+          className="absolute w-1 h-1 bg-sky-400/40 rounded-full blur-[1px]"
+        />
+      ))}
+      {[...Array(15)].map((_, i) => (
+        <motion.div
+          key={`glow-${i}`}
+          initial={{ 
+            opacity: 0, 
+            x: Math.random() * 100 + "%", 
+            y: Math.random() * 100 + "%" 
+          }}
+          animate={{ 
+            opacity: [0, 0.15, 0],
+            scale: [1, 1.5, 1]
+          }}
+          transition={{ 
+            duration: Math.random() * 5 + 5, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: Math.random() * 5
+          }}
+          className="absolute w-24 h-24 bg-sky-500/10 rounded-full blur-[60px]"
+        />
+      ))}
+    </div>
+  );
+};
+
 const ImagePlaceholder = ({ className = "", label = "Image Placeholder" }: { className?: string; label?: string }) => (
   <div className={`relative overflow-hidden group ${className}`}>
     <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent animate-pulse" />
@@ -182,6 +231,7 @@ export default function Home() {
     <main ref={containerRef} className="mesh-gradient min-h-screen text-white font-sans selection:bg-sky-500/30 overflow-x-hidden relative">
       <div className="noise" />
       <HeaderStrip />
+      <BackgroundParticles />
       
       <AnimatePresence>
         {!isLoaded && <BootUpSplash />}
