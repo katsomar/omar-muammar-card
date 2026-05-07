@@ -71,9 +71,9 @@ function CircularProgress({ value, max, label, suffix = "", delay = 0 }: { value
 }
 
 const stats = [
-  { label: "Projects Delivered", value: 15, max: 20, suffix: "+" },
-  { label: "Years Experience", value: 5, max: 10, suffix: "+" },
-  { label: "Global Clients", value: 12, max: 15, suffix: "+" },
+  { label: "Projects Delivered", value: 60, max: 80, suffix: "+" },
+  { label: "Years Experience", value: 8, max: 10, suffix: "+" },
+  { label: "Global Clients", value: 50, max: 60, suffix: "+" },
 ];
 
 export default function Stats() {

@@ -570,7 +570,7 @@ export default function Home() {
           <BentoCard className="md:col-span-4">
             <div className="flex items-center gap-2 mb-2 text-sky-400">
               <Code2 size={18} />
-              <span className="text-[10px] uppercase tracking-widest font-bold">Arsenal</span>
+              <span className="text-[10px] uppercase tracking-widest font-bold">Tech Stack</span>
             </div>
             <p className="text-xs text-white/50 mb-1">Modern ecosystem mastery:</p>
             <TechMarquee />
