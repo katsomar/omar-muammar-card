@@ -6,7 +6,7 @@ import {
   Phone, Mail, Globe, Linkedin, MessageCircle, 
   Download, Cpu, Code2, Globe2, Sparkles, 
   Zap, Layers, Rocket, ShieldCheck, ExternalLink,
-  ChevronRight, Instagram, Twitter, Star
+  ChevronRight, Instagram, Facebook, Star
 } from "lucide-react";
 import Stats from "@/components/Stats";
 
@@ -25,9 +25,21 @@ const HeaderStrip = () => {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-10 bg-[#050A18]/80 backdrop-blur-md border-b border-white/5 flex items-center px-6 overflow-hidden">
-      <div className="absolute inset-0 bg-sky-500/5 animate-pulse" />
-      <div className="absolute bottom-0 left-0 h-[1px] bg-sky-400/30 w-full overflow-hidden">
+    <div className="fixed top-0 left-0 right-0 z-[150] h-12 bg-[#050A18]/80 backdrop-blur-md border-b border-white/5 px-4 lg:px-12 flex items-center justify-between">
+      <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3">
+          <div className="w-6 h-6 overflow-hidden">
+            <img src="/logo/dark.png" alt="Logo" className="w-full h-full object-contain" />
+          </div>
+          <div className="w-[1px] h-4 bg-white/10 mx-2 hidden sm:block" />
+        </div>
+        {/* <div className="flex items-center gap-2 text-sky-400">
+          <div className="w-2 h-2 rounded-full bg-sky-500 animate-pulse" />
+          <span className="text-[10px] font-black uppercase tracking-[0.3em]">System Live</span>
+        </div> */}
+      </div>
+      <div className="absolute inset-0 bg-sky-500/5 animate-pulse pointer-events-none" />
+      <div className="absolute bottom-0 left-0 h-[1px] bg-sky-400/30 w-full overflow-hidden pointer-events-none">
         <motion.div 
           animate={{ x: ["-100%", "100%"] }}
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
@@ -257,13 +269,14 @@ const ImagePlaceholder = ({ className = "", label = "Image Placeholder" }: { cla
 
 const BootUpSplash = () => {
   const [logs, setLogs] = useState<string[]>([]);
+  const [progress, setProgress] = useState(0);
   const allLogs = [
-    "[SYSTEM] Initializing Skyrix Core...",
-    "[NETWORK] Connecting to muammar@skyrix.com...",
-    "[SECURITY] decrypting BMO_ACCESS_KEY...",
-    "[GRAPHICS] Rendering Bento Dashboard...",
-    "[STATUS] Co-Founder authenticated.",
-    "[READY] Welcome, Bablo Muammar Omar."
+    "INITIALIZING CORE...",
+    "CONNECTING TO SKYRIX NETWORK...",
+    "DECRYPTING ACCESS KEYS...",
+    "OPTIMIZING BENTO RENDERING...",
+    "CO-FOUNDER AUTHENTICATED",
+    "SYSTEMS READY"
   ];
 
   useEffect(() => {
@@ -272,44 +285,106 @@ const BootUpSplash = () => {
       if (currentLog < allLogs.length) {
         setLogs(prev => [...prev, allLogs[currentLog]]);
         currentLog++;
+        setProgress((currentLog / allLogs.length) * 100);
       } else {
         clearInterval(interval);
       }
-    }, 300);
+    }, 700);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <motion.div
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.8, ease: "circOut" } }}
-      className="fixed inset-0 z-[100] bg-[#050A18] flex flex-col items-center justify-center font-mono p-6"
+      exit={{ 
+        opacity: 0, 
+        scale: 1.1,
+        filter: "blur(20px)",
+        transition: { duration: 1, ease: "circIn" } 
+      }}
+      className="fixed inset-0 z-[500] bg-[#050A18] flex flex-col items-center justify-center p-6 overflow-hidden"
     >
-      <div className="w-full max-w-md space-y-2">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-3 h-3 rounded-full bg-red-500/50 animate-pulse" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500/50 animate-pulse delay-75" />
-          <div className="w-3 h-3 rounded-full bg-green-500/50 animate-pulse delay-150" />
-        </div>
-        <AnimatePresence mode="popLayout">
-          {logs.map((log, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="text-sky-400 text-xs md:text-sm"
-            >
-              <span className="text-sky-800 mr-2">{">"}</span> {log}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 2.5, ease: "linear" }}
-          className="h-1 bg-sky-500 shadow-[0_0_15px_#0EA5E9] mt-8"
-        />
+      {/* Background Ambience */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-sky-500/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute inset-0 noise opacity-20" />
       </div>
+
+      <div className="relative z-10 flex flex-col items-center">
+        {/* Logo and Progress Ring */}
+        <div className="relative w-48 h-48 flex items-center justify-center mb-16">
+          <svg className="absolute inset-0 w-full h-full -rotate-90">
+            <circle
+              cx="96"
+              cy="96"
+              r="80"
+              className="stroke-white/5 fill-none"
+              strokeWidth="2"
+            />
+            <motion.circle
+              cx="96"
+              cy="96"
+              r="80"
+              className="stroke-sky-500 fill-none"
+              strokeWidth="2"
+              strokeLinecap="round"
+              initial={{ strokeDasharray: "0 502" }}
+              animate={{ strokeDasharray: `${(progress / 100) * 502} 502` }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            />
+          </svg>
+          
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="w-24 h-24 p-4 relative"
+          >
+            <div className="absolute inset-0 bg-sky-500/20 rounded-full blur-2xl animate-pulse" />
+            <img 
+              src="/logo/dark.png" 
+              alt="Skyrix" 
+              className="w-full h-full object-contain relative z-10 brightness-125" 
+            />
+          </motion.div>
+        </div>
+
+        {/* Cinematic Logs */}
+        <div className="w-full max-w-[200px] space-y-3">
+          <AnimatePresence mode="popLayout">
+            {logs.slice(-1).map((log, i) => (
+              <motion.div
+                key={log}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="flex flex-col items-center gap-2"
+              >
+                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-sky-400 drop-shadow-[0_0_8px_rgba(14,165,233,0.5)] text-center">
+                  {log}
+                </span>
+                <div className="flex gap-1">
+                  {[...Array(3)].map((_, j) => (
+                    <motion.div
+                      key={j}
+                      animate={{ opacity: [0.2, 1, 0.2] }}
+                      transition={{ duration: 1, repeat: Infinity, delay: j * 0.2 }}
+                      className="w-1 h-1 bg-sky-500 rounded-full"
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Decorative Scanning Line */}
+      <motion.div 
+        animate={{ top: ["-10%", "110%"] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+        className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-sky-500/20 to-transparent shadow-[0_0_15px_rgba(14,165,233,0.1)] pointer-events-none"
+      />
     </motion.div>
   );
 };
@@ -386,7 +461,7 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoaded(true), 3000);
+    const timer = setTimeout(() => setIsLoaded(true), 5000);
     const reviewInterval = setInterval(() => {
       setActiveReview((prev) => (prev + 1) % reviews.length);
     }, 5000);
@@ -425,7 +500,7 @@ export default function Home() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-gold/5 rounded-full blur-[120px] animate-pulse-glow delay-1000" />
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-12 md:py-24 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 pt-20 pb-12 md:py-24 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 auto-rows-auto">
           
           {/* HERO PROFILE SECTION */}
@@ -436,7 +511,14 @@ export default function Home() {
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 className="absolute inset-[-8px] rounded-full border border-dashed border-sky-400/30 group-hover:border-sky-400 transition-colors"
               />
-              <ImagePlaceholder className="w-48 h-48 md:w-56 md:h-56 rounded-full" label="Profile Photo" />
+              <div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden relative group border-4 border-white/5 shadow-2xl">
+                <img 
+                  src="/images/me.jpg" 
+                  alt="Bablo Muammar Omar" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050A18]/40 to-transparent pointer-events-none" />
+              </div>
               <div className="absolute -bottom-2 -right-2 bg-sky-500 text-white p-3 rounded-2xl shadow-lg animate-bounce">
                 <Sparkles size={20} />
               </div>
@@ -543,7 +625,14 @@ export default function Home() {
 
             {/* Image Right */}
             <div className="shrink-0 order-1 lg:order-3">
-              <ImagePlaceholder className="w-64 h-64 md:w-72 md:h-80 rounded-[2.5rem] shadow-2xl rotate-[2deg] hover:rotate-0 transition-all duration-700 border border-white/5" label="Alternate View" />
+              <div className="w-64 h-64 md:w-72 md:h-80 rounded-[2.5rem] overflow-hidden relative group shadow-2xl rotate-[2deg] hover:rotate-0 transition-all duration-700 border border-white/5">
+                <img 
+                  src="/images/ceo.jpeg" 
+                  alt="Bablo Muammar Omar" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050A18]/40 to-transparent pointer-events-none" />
+              </div>
             </div>
           </BentoCard>
 
@@ -570,19 +659,26 @@ export default function Home() {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { title: "Skyrix OS", category: "Infrastructure", color: "from-blue-500/20" },
-                { title: "Bento Builder", category: "Open Source", color: "from-purple-500/20" },
-                { title: "Quantum API", category: "Backend", color: "from-amber-500/20" },
+                { title: "Skyrix OS", category: "Infrastructure", img: "/projects/loko.png" },
+                { title: "Bento Builder", category: "Open Source", img: "/projects/pos.png" },
+                { title: "Quantum API", category: "Backend", img: "/projects/bw.png" },
               ].map((project, i) => (
                 <div key={i} className="group/item cursor-pointer">
-                  <ImagePlaceholder className="w-full aspect-video rounded-2xl mb-4 bg-gradient-to-br transition-all group-hover/item:scale-[1.02]" label={project.title} />
-                  <div className="flex items-center justify-between">
+                  <div className="w-full aspect-video rounded-2xl mb-4 overflow-hidden relative border border-white/5">
+                    <img 
+                      src={project.img} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover transition-all duration-700 group-hover/item:scale-110 group-hover/item:rotate-1"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050A18]/60 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500" />
+                  </div>
+                  <div className="flex items-center justify-between px-1">
                     <div>
-                      <h4 className="font-bold text-sm text-white group-hover/item:text-sky-400 transition-colors">{project.title}</h4>
-                      <p className="text-[10px] text-white/40 uppercase tracking-wider font-medium">{project.category}</p>
+                      <h4 className="font-black text-sm text-white group-hover/item:text-sky-400 transition-colors uppercase tracking-tight">{project.title}</h4>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-black">{project.category}</p>
                     </div>
-                    <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/item:bg-sky-500 transition-colors">
-                      <ExternalLink size={14} />
+                    <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover/item:bg-sky-500 group-hover/item:border-sky-400 transition-all duration-500">
+                      <ExternalLink size={14} className="text-white group-hover/item:scale-110 transition-transform" />
                     </div>
                   </div>
                 </div>
@@ -789,9 +885,13 @@ export default function Home() {
       <div className="max-w-[1440px] mx-auto px-4 lg:px-12 pb-24 md:pb-32 relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-12 border-t border-white/5 pt-16">
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center border border-sky-500/20 group hover:bg-sky-500 transition-all duration-500">
-                <Rocket size={20} className="text-sky-400 group-hover:text-white" />
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group hover:border-sky-500 transition-all duration-500 overflow-hidden p-2">
+                <img 
+                  src="/logo/dark.png" 
+                  alt="Skyrix Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <h3 className="text-2xl font-black tracking-tighter">
                 Skyrix <span className="text-sky-400">
@@ -803,14 +903,22 @@ export default function Home() {
               Architecting the next generation of digital infrastructure and immersive user experiences.
             </p>
             <div className="flex gap-4">
-              {[Twitter, Instagram, Linkedin, Globe].map((Icon, i) => (
-                <motion.div
+              {[
+                { Icon: Facebook, url: "https://www.facebook.com/61588036853642/photos/" },
+                { Icon: Instagram, url: "https://www.instagram.com/skyrixtechnologies?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
+                { Icon: Linkedin, url: "https://www.linkedin.com/in/kats-omar" },
+                { Icon: Globe, url: "https://skyrix-tech.vercel.app" }
+              ].map((social, i) => (
+                <motion.a
                   key={i}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   whileHover={{ y: -5, scale: 1.1 }}
                   className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/20 hover:text-sky-400 hover:border-sky-400/30 cursor-pointer transition-all"
                 >
-                  <Icon size={18} />
-                </motion.div>
+                  <social.Icon size={18} />
+                </motion.a>
               ))}
             </div>
           </div>
