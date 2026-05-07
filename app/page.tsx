@@ -6,7 +6,7 @@ import {
   Phone, Mail, Globe, Linkedin, MessageCircle, 
   Download, Cpu, Code2, Globe2, Sparkles, 
   Zap, Layers, Rocket, ShieldCheck, ExternalLink,
-  ChevronRight, Instagram, Twitter
+  ChevronRight, Instagram, Twitter, Star
 } from "lucide-react";
 import Stats from "@/components/Stats";
 
@@ -359,11 +359,31 @@ const TechMarquee = () => {
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showCatalog, setShowCatalog] = useState(false);
+  const [activeReview, setActiveReview] = useState(0);
   const containerRef = useRef(null);
+
+  const reviews = [
+    { name: "Kato Wasswa", company: "Central Logistics", text: "The architectural precision provided by Skyrix has redefined our digital presence completely." },
+    { name: "Namukasa Sarah", company: "Elite Tech Solutions", text: "Exceptional service and deep technical expertise. They delivered exactly what we needed." },
+    { name: "Okello John", company: "Nile Dynamics", text: "Skyrix transformed our digital infrastructure overnight. High-performance systems that never fail." },
+    { name: "Mirembe Joy", company: "Pearl FinTech", text: "A truly global standard of engineering right here. Seamless integration and great support." },
+    { name: "Ssali David", company: "Victoria Energy", text: "They don't just build software; they engineer solutions that redefine industry standards." },
+    { name: "Nalubega Proscovia", company: "Summit Media", text: "The most reliable software partners in the region. Innovative solutions with a personal touch." },
+    { name: "Mugisha Ronald", company: "Horizon Group", text: "Architectural precision at its finest. The best investment for our company's long-term growth." },
+    { name: "Atwine Patience", company: "Savannah Apps", text: "Highly professional team. They bridge the gap between complex engineering and human design." },
+    { name: "Kibirige Shafiq", company: "Kampala Cloud", text: "Innovative, efficient, and forward-thinking. Skyrix is the future of digital architecture." },
+    { name: "Nantongo Grace", company: "Blue Nile Systems", text: "Outstanding execution. Their attention to detail in system performance is simply unmatched." },
+  ];
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 3000);
-    return () => clearTimeout(timer);
+    const reviewInterval = setInterval(() => {
+      setActiveReview((prev) => (prev + 1) % reviews.length);
+    }, 5000);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(reviewInterval);
+    };
   }, []);
 
   const downloadVCard = () => {
@@ -560,39 +580,197 @@ export default function Home() {
             </div>
           </BentoCard>
 
+          {/* NEWSLETTER & REVIEWS SECTION */}
+          <div className="md:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            {/* Newsletter Card */}
+            <BentoCard className="relative group overflow-hidden p-0 flex flex-col min-h-[400px]">
+              <div className="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-transparent pointer-events-none" />
+              <div className="p-10 flex flex-col h-full justify-between relative z-10">
+                <div>
+                  <div className="flex items-center gap-3 text-sky-400 mb-8">
+                    <div className="w-12 h-12 rounded-2xl bg-sky-500/10 flex items-center justify-center border border-sky-500/20 shadow-[0_0_20px_rgba(14,165,233,0.1)]">
+                      <Mail size={24} />
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20 block mb-1">Intelligence</span>
+                      <h3 className="text-2xl font-black tracking-tighter uppercase">Skyrix <span className="text-sky-400">Digest</span></h3>
+                    </div>
+                  </div>
+                  <p className="text-white/40 text-sm leading-relaxed max-w-sm mb-12 font-medium">
+                    Architectural insights, technological breakthroughs, and engineering secrets delivered to your core.
+                  </p>
+                </div>
+                
+                <div className="space-y-8">
+                  <div className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-sky-500/20 to-cyan-500/20 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition duration-500" />
+                    <div className="relative flex items-center">
+                      <input 
+                        type="email" 
+                        placeholder="ENTER YOUR EMAIL ADDRESS" 
+                        className="w-full bg-[#0A0F1E]/80 border border-white/5 rounded-2xl py-6 px-8 text-[11px] font-black tracking-[0.2em] text-white outline-none focus:border-sky-500/50 transition-all placeholder:text-white/10"
+                      />
+                      <motion.button 
+                        whileHover={{ scale: 1.05, x: -5 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="absolute right-3 bg-sky-500 text-white px-6 py-3 rounded-xl shadow-xl shadow-sky-500/20 font-black text-[10px] uppercase tracking-widest flex items-center gap-2"
+                      >
+                        Join <Rocket size={14} />
+                      </motion.button>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="flex -space-x-3">
+                        {[...Array(3)].map((_, i) => (
+                          <div key={i} className="w-8 h-8 rounded-full border-4 border-[#050A18] bg-white/10 overflow-hidden relative">
+                            <div className="absolute inset-0 bg-gradient-to-br from-sky-400/30 to-sky-600/30" />
+                            <div className="absolute inset-0 flex items-center justify-center text-[8px] font-black text-white/40">U{i}</div>
+                          </div>
+                        ))}
+                      </div>
+                      <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">1.2k+ Subscribed</span>
+                    </div>
+                    <div className="w-1 h-1 rounded-full bg-sky-500/30" />
+                  </div>
+                </div>
+              </div>
+            </BentoCard>
+
+            {/* Experience Rating Card */}
+            <BentoCard className="relative group overflow-hidden p-0 flex flex-col min-h-[400px]">
+              <div className="absolute inset-0 bg-gradient-to-tl from-sky-500/5 to-transparent pointer-events-none" />
+              <div className="p-10 flex flex-col h-full relative z-10">
+                <div className="flex items-center justify-between mb-12">
+                  <div className="flex items-center gap-3">
+                    <ShieldCheck size={18} className="text-sky-400" />
+                    <span className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">Quality Control</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={10} className="text-sky-400 fill-sky-400/20" />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex flex-col md:flex-row items-center gap-12 flex-1">
+                  <div className="relative shrink-0">
+                    <div className="w-40 h-40 relative flex items-center justify-center">
+                      <motion.div 
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-0 rounded-full border border-dashed border-sky-400/10"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        {[...Array(6)].map((_, i) => {
+                          const angle = (i * 360) / 6;
+                          const radius = 60;
+                          const x = radius * Math.cos((angle - 90) * (Math.PI / 180));
+                          const y = radius * Math.sin((angle - 90) * (Math.PI / 180));
+                          const isFull = i < 4;
+                          const isHalf = i === 4;
+
+                          return (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
+                              animate={{ 
+                                opacity: 1, 
+                                scale: 1,
+                                x: x,
+                                y: y
+                              }}
+                              transition={{ 
+                                delay: i * 0.1,
+                                type: "spring",
+                                stiffness: 200,
+                                damping: 20
+                              }}
+                              className="absolute"
+                            >
+                              <motion.div
+                                animate={{ rotate: [0, 10, 0] }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
+                              >
+                                <Star 
+                                  size={16} 
+                                  className={`${isFull ? "text-yellow-500 fill-yellow-500" : isHalf ? "text-yellow-500/40 fill-yellow-500/20" : "text-white/5"} drop-shadow-[0_0_10px_rgba(234,179,8,0.4)]`} 
+                                />
+                              </motion.div>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <span className="text-5xl font-black text-white tracking-tighter">4.9</span>
+                        <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/20 mt-2">Platform Rating</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 text-center md:text-left space-y-6">
+                    <div className="space-y-1 mb-8">
+                      <div className="flex items-center gap-2 text-sky-400/50 justify-center md:justify-start">
+                        <div className="w-6 h-[1px] bg-sky-500/30" />
+                        <span className="text-[9px] font-black uppercase tracking-[0.4em]">Trust Ledger</span>
+                      </div>
+                      <h3 className="text-3xl font-black tracking-tighter uppercase leading-none italic">
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/50">Architectural</span> <br/>
+                        <span className="text-sky-400 drop-shadow-[0_0_15px_rgba(14,165,233,0.3)]">Appraisals</span>
+                      </h3>
+                    </div>
+                    
+                    <div className="min-h-[100px] relative">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={activeReview}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          transition={{ duration: 0.5 }}
+                          className="space-y-6"
+                        >
+                          <p className="text-white/50 text-sm leading-relaxed font-medium italic">
+                            "{reviews[activeReview].text}"
+                          </p>
+                          <div className="flex items-center gap-4 pt-4 border-t border-white/5 justify-center md:justify-start">
+                            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-sky-400 font-black text-xs">
+                              {reviews[activeReview].name.split(' ').map(n => n[0]).join('')}
+                            </div>
+                            <div>
+                              <div className="text-[10px] font-black text-white uppercase tracking-widest">{reviews[activeReview].name}</div>
+                              <div className="text-[8px] font-black text-white/20 uppercase tracking-[0.2em]">{reviews[activeReview].company}</div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </BentoCard>
+          </div>
+
           {/* CONNECT SECTION */}
-          <div className="md:col-span-12 grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
+          <div className="md:col-span-12 grid grid-cols-2 lg:grid-cols-5 gap-4 mt-2">
             {[
-              { icon: Phone, label: "Phone", href: "tel:+256700000000", color: "hover:border-blue-500/30" },
-              { icon: MessageCircle, label: "WhatsApp", href: "https://wa.me/256700000000", color: "hover:border-green-500/30" },
-              { icon: Mail, label: "Email", href: "mailto:muammar@skyrix.com", color: "hover:border-purple-500/30" },
-              { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/muammar-omar", color: "hover:border-blue-600/30" },
+              { icon: Phone, label: "Phone", value: "+256 700 000 000" },
+              { icon: MessageCircle, label: "WhatsApp", value: "+256 700 000 000" },
+              { icon: Mail, label: "Email", value: "muammar@skyrix.com" },
+              { icon: Linkedin, label: "LinkedIn", value: "Bablo Muammar" },
+              { icon: Globe, label: "Skyrix Technologies", value: "skyrix-tech.vercel.app" },
             ].map((item, i) => (
-              <BentoCard key={i} className={`flex flex-col items-center justify-center p-8 cursor-pointer transition-all border-white/5 ${item.color}`} delay={0.1 * i}>
-                <a href={item.href} target="_blank" className="flex flex-col items-center">
-                  <item.icon size={32} className="mb-4 text-white/60 group-hover:text-sky-400 group-hover:scale-110 transition-all duration-300" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 group-hover:text-white/60 transition-colors">{item.label}</span>
-                </a>
+              <BentoCard key={i} className="flex flex-col items-center justify-center py-8 group cursor-pointer hover:border-sky-500/40 transition-all duration-500">
+                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-4 group-hover:bg-sky-500 transition-all duration-500 group-hover:scale-110 shadow-lg group-hover:shadow-sky-500/20">
+                  <item.icon size={24} className="text-sky-400 group-hover:text-white transition-colors" />
+                </div>
+                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/20 mb-1 group-hover:text-sky-400/50 transition-colors">{item.label}</span>
+                <span className="text-[10px] font-bold text-white/60 group-hover:text-white transition-colors">{item.value}</span>
               </BentoCard>
             ))}
           </div>
 
-          {/* WEBSITE TILE */}
-          <BentoCard className="md:col-span-12 flex items-center justify-between group cursor-pointer border-white/5" delay={0.5}>
-            <a href="https://skyrix-techologies.vercel.app" target="_blank" className="flex items-center gap-6 w-full">
-              <div className="w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all duration-500 group-hover:rotate-6">
-                <Globe size={32} />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] font-black uppercase tracking-widest text-white/30">Official Domain</span>
-                <span className="text-xl md:text-2xl font-bold tracking-tight">skyrix-techologies.vercel.app</span>
-              </div>
-              <div className="ml-auto flex items-center gap-2 text-sky-400 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0">
-                <span className="text-[10px] font-bold uppercase">Launch</span>
-                <ChevronRight size={20} />
-              </div>
-            </a>
-          </BentoCard>
 
         </div>
       </div>
