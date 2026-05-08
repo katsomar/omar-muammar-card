@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://omar-muammar-portfolio.vercel.app"),
+  metadataBase: new URL("https://omar-muammar-portifolio.vercel.app"),
   title: "Bablo Muammar Omar | Skyrix Technologies",
   description: "Co-Founder of Skyrix Technologies. Building the future with cutting-edge technology.",
   applicationName: "Bablo Muammar Omar",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Bablo Muammar Omar | Skyrix Technologies",
     description: "Co-Founder of Skyrix Technologies. Building the future with cutting-edge technology.",
-    url: "https://omar-muammar-portfolio.vercel.app",
+    url: "https://omar-muammar-portifolio.vercel.app",
     siteName: "Bablo Muammar Omar",
     images: [
       {
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     apple: "/logo/logo2.png",
   },
   alternates: {
-    canonical: "https://omar-muammar-portfolio.vercel.app",
+    canonical: "https://omar-muammar-portifolio.vercel.app",
   },
 };
 
@@ -72,7 +72,7 @@ export default function RootLayout({
               "@type": "WebSite",
               "name": "Bablo Muammar Omar",
               "alternateName": ["Bablo Muammar", "Muammar Omar"],
-              "url": "https://omar-muammar-portfolio.vercel.app",
+              "url": "https://omar-muammar-portifolio.vercel.app",
             }),
           }}
         />

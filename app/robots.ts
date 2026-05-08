@@ -7,6 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/private/',
     },
-    sitemap: 'https://omar-muammar-portfolio.vercel.app/sitemap.xml',
+    sitemap: 'https://omar-muammar-portifolio.vercel.app/sitemap.xml',
+
   }
 }
