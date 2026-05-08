@@ -47,7 +47,11 @@ export const metadata: Metadata = {
     shortcut: "/logo/logo2.png",
     apple: "/logo/logo2.png",
   },
+  alternates: {
+    canonical: "https://omar-muammar-portfolio.vercel.app",
+  },
 };
+
 
 export default function RootLayout({
   children,
