@@ -473,7 +473,7 @@ export default function Home() {
   }, []);
 
   const downloadVCard = () => {
-    const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:Bablo Muammar Omar\nORG:Skyrix Technologies\nTITLE:Co-Founder\nTEL;TYPE=CELL:+256700000000\nEMAIL:muammar@skyrix.com\nURL:https://skyrix-techologies.vercel.app\nEND:VCARD`;
+    const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:Bablo Muammar Omar\nORG:Skyrix Technologies\nTITLE:Co-Founder\nTEL;TYPE=CELL:+256771827046\nEMAIL:katsomar60@gmail.com\nURL:https://skyrix-techologies.vercel.app\nEND:VCARD`;
     const blob = new Blob([vcard], { type: "text/vcard" });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -932,9 +932,9 @@ export default function Home() {
             {[
               { icon: Phone, label: "Phone", value: "+256 771 827046", url: "tel:+256771827046" },
               { icon: MessageCircle, label: "WhatsApp", value: "+256 771 827046", url: "https://wa.me/256771827046" },
-              { icon: Mail, label: "Email", value: "katsom60@gmai.com", url: "mailto:katsomar60@gmail.com" },
+              { icon: Mail, label: "Email", value: "katsomar60@gmail.com", url: "mailto:katsomar60@gmail.com" },
               { icon: Linkedin, label: "LinkedIn", value: "Kats Omar", url: "https://www.linkedin.com/in/kats-omar" },
-              { icon: Globe, label: "Skyrix Technologies", value: "skyrix-tech.vercel.app", url: "https://skyrix-techologies.vercel.app/" },
+              { icon: Globe, label: "Skyrix Technologies", value: "skyrix-techologies.vercel.app", url: "https://skyrix-techologies.vercel.app/" },
             ].map((item, i) => (
               <a key={i} href={item.url} target={item.url.startsWith('http') ? "_blank" : undefined} rel={item.url.startsWith('http') ? "noopener noreferrer" : undefined}>
                 <BentoCard className="flex flex-col items-center justify-center py-8 group cursor-pointer hover:border-sky-500/40 transition-all duration-500 h-full">
@@ -999,7 +999,7 @@ export default function Home() {
           <div className="flex flex-col items-center md:items-end gap-6">
             <div className="text-right hidden md:block">
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 block mb-2">Primary Contact</span>
-              <span className="text-lg font-bold text-white/60">muammar@skyrix.com</span>
+              <span className="text-lg font-bold text-white/60">katsomar60@gmail.com</span>
             </div>
             <motion.button
               onClick={downloadVCard}
